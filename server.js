@@ -1,7 +1,6 @@
 const express    = require("express");
 const apiRoutes  = require("./routes/apiRoutes");
 const htmlRoutes = require("./routes/htmlRoutes");
-
 const app        = express();
 const PORT       = process.env.PORT || 3002;
 
@@ -16,8 +15,8 @@ navigates to <ourhost>/api, the app will use
 the router we set up in apiRoutes. If / is 
 the endpoint, then the router will serve 
 back our HTML routes. */
-app.use("/api", apiRoutes);
 app.use("/", htmlRoutes);
+app.use("/api", apiRoutes);
 
 //connect public css and js to html as static resources
 app.use(express.static("public"));
