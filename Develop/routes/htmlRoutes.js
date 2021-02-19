@@ -8,12 +8,12 @@ router.get("/", (req, res) => {
     //To create a new directory in your index.js file, insert 
     //__dirname as the first argument to path.join() and the 
     //name of the new directory as the second
-    res.sendFile(path.join(__dirname, "../Develop/public/index.html"));
+    res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
 //get notes.html
 router.get("/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "../Develop/public/notes.html"));
+    res.sendFile(path.join(__dirname, "../public/notes.html"));
 });
 
 module.exports = router;

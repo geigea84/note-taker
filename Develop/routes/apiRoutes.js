@@ -1,7 +1,7 @@
 //reference https://expressjs.com/en/api.html
 //see db.js for functions for each route
 const router = require("express").Router();
-const db = require("../db/db.js");
+const db = require("../db/db");
 
 //get all notes
 router.get("/notes", (req, res) => {
