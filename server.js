@@ -1,14 +1,21 @@
 const express = require("express");
 const apiRoutes = require("./routes/apiRoutes");
 const htmlRoutes = require("./routes/htmlRoutes");
+
+//initialize the app
 const app = express();
-const PORT = process.env.PORT || 3002;
+
+//create a port
+const PORT = process.env.PORT || 3003;
+
+//parse incoming JSON data
+app.use(express.json());
 
 //parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 
-//parse incoming JSON data
-app.use(express.json());
+//connect public css and js to html as static resources
+app.use(express.static("public"));
 
 /* Tell the server that any time a client 
 navigates to <ourhost>/api, the app will use 
@@ -18,9 +25,6 @@ back our HTML routes. */
 app.use("/", htmlRoutes);
 app.use("/api", apiRoutes);
 
-//connect public css and js to html as static resources
-app.use(express.static("public"));
-
 app.listen(PORT, () => {
-    console.log(`Now on port: ${PORT}`);
+    console.log(`Now open on port ${PORT}`);
 });

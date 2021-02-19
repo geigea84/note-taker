@@ -1,17 +1,11 @@
 //reference https://expressjs.com/en/api.html
 //see db.js for functions for each route
 const router = require("express").Router();
-const {
-    readNotes,
-    writeNotes,
-    getNotes,
-    addNote,
-    deleteNote
-} = require("../../Develop/db/db.js");
+const db = require("../../Develop/db/db.js");
 
 //get all notes
 router.get("/notes", (req, res) => {
-    getNotes()
+    db.getNotes()
         .then((notes) => {
             return res.json(notes);
         })
@@ -23,7 +17,7 @@ router.get("/notes", (req, res) => {
 //create a new note
 router.post("/notes", (req, res) => {
     //https://expressjs.com/en/api.html#req.body
-    addNote(req.body)
+    db.addNote(req.body)
         .then((note) => {
             res.json(note);
         })
@@ -35,7 +29,7 @@ router.post("/notes", (req, res) => {
 //get a note by its id and delete
 router.delete("/notes/:id", (req, res) => {
     //https://expressjs.com/en/api.html#req.params
-    deleteNote(req.params.id)
+    db.deleteNote(req.params.id)
         .then(() => {
             res.json({ ok: true });
         })

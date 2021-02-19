@@ -4,76 +4,78 @@
 const fs = require("fs");
 
 //uuid.v1() create a version 1 timestamp UUID
-const uuid = require("uuid/v1");
+const { v1: uuidv1 } = require('uuid');
 
-function readNotes() {
-    return fs.readFileAsync("Develop/db.json");
-}
+//combine functions into a single exportable class
+class DB {
 
-function writeNotes(note) {
-    return fs.writeFileAsync("Develop/db.json", JSON.stringify(note));
-}
+    //https://www.w3schools.com/nodejs/nodejs_filesystem.asp
+    //read through the notes objects in db.json
+    read() {
+        return fs.readFile("Develop/db.json");
+    }
 
-function getNotes() {
-    return ((notes) => {
-        //create let to hold parsed notes
-        let parsedNotes;
+    //write the stringified notes objects to the page
+    write(note) {
+        return fs.writeFile("Develop/db.json", JSON.stringify(note));
+    }
 
-        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
-        //try to execute the first section, throw an exception if it can't be done
-        try {
-            parsedNotes = [].concat(JSON.parse(notes));
+    getNotes() {
+        return ((notes) => {
+            //create let to hold parsed notes
+            let parsedNotes;
+
+            //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
+            //try to execute the first section, throw an exception if it can't be done
+            try {
+                parsedNotes = [].concat(JSON.parse(notes));
+            }
+            catch {
+                parsedNotes = [];
+            }
+
+            return parsedNotes;
+        });
+    }
+
+    addNote(note) {
+        //destructure the note
+        const { title, text } = note;
+
+        //stop blank title field from being entered
+        if (!title) {
+            alert('Title cannot be blank');
         }
-        catch {
-            parsedNotes = [];
+        //stop blank text field from being entered
+        else if (!text) {
+            alert('Text cannot be blank');
         }
 
-        return parsedNotes;
-    });
-}
+        //create new note object with unique id
+        const createNote = {
+            title,
+            text,
+            id: uuidv1()
+        }
 
-function addNote(note) {
-    //destructure the note
-    const { title, text } = note;
-
-    //stop blank fields from being entered
-    if (!title) {
-        alert('Title cannot be blank');
-    }
-    else if (!text) {
-        alert('Text cannot be blank');
-    }
-
-    //create new note with unique id
-    const createNote = {
-        title,
-        text,
-        id: uuid()
+        //get all notes
+        return this.getNotes()
+            //add new note to all notes
+            .then((notes) => [...notes, createNote])
+            //write all notes with new note
+            .then((newNotesList) => this.writeNotes(newNotesList))
+            //return the new note
+            .then(() => createNote);
     }
 
-    //get all notes
-    return this.getNotes()
-        //add new note to all notes
-        .then((notes) => [...notes, createNote])
-        //write all notes with new note
-        .then((newNotesList) => this.writeNotes(newNotesList))
-        //return the new note
-        .then(() => createNote);
+    deleteNote(id) {
+        //get all notes
+        return this.getNotes()
+            //delete the note with the given id
+            .then((notes) => notes.filter((note) => note.id !== id))
+            //write all updated notes
+            .then((updatedNotes) => this.writeNotes(updatedNotes));
+    }
 }
 
-function deleteNote(id) {
-    //get all notes
-    return this.getNotes()
-        //delete the note with the given id
-        .then((notes) => notes.filter((note) => note.id !== id))
-        //write all updated notes
-        .then((updatedNotes) => this.writeNotes(updatedNotes));
-}
-
-module.exports = {
-    readNotes,
-    writeNotes,
-    getNotes,
-    addNote,
-    deleteNote
-};
+module.exports = new DB();
