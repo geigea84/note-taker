@@ -22,6 +22,7 @@ class DB {
 
     //write the stringified notes objects to the page
     write(note) {
+        //console.log(note);
         return writeFileAsync("db/db.json", JSON.stringify(note));
     }
 
@@ -39,7 +40,9 @@ class DB {
                 parsedNotes = [];
                 console.log(err);
             }
-
+            // console.log('parsedNotes start');
+            // console.log(parsedNotes);
+            // console.log('parsedNotes end');
             return parsedNotes;
         });
     }

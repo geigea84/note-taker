@@ -7,6 +7,7 @@ const db = require("../db/database");
 router.get("/notes", (req, res) => {
     db.getNotes()
         .then((notes) => {
+            //console.log(notes);
             return res.json(notes);
         })
         .catch((err) => {
