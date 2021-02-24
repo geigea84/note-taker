@@ -2,7 +2,6 @@
 //https://www.npmjs.com/package/uuid see version 1
 //import dependencies
 const fs = require("fs");
-const { read } = require("store/storages/localStorage");
 //https://www.npmjs.com/package/util
 const util = require("util");
 
@@ -63,14 +62,14 @@ class DB {
             title,
             text,
             id: uuidv1()
-        }
+        };
 
         //get all notes
         return this.getNotes()
             //add new note to all notes
             .then((notes) => [...notes, createNote])
             //write all notes with new note
-            .then((newNotesList) => this.writeNotes(newNotesList))
+            .then((newNotesList) => this.write(newNotesList))
             //return the new note
             .then(() => createNote);
     }
@@ -81,7 +80,7 @@ class DB {
             //delete the note with the given id
             .then((notes) => notes.filter((note) => note.id !== id))
             //write all updated notes
-            .then((updatedNotes) => this.writeNotes(updatedNotes));
+            .then((updatedNotes) => this.write(updatedNotes));
     }
 }
 
