@@ -2,9 +2,15 @@
 //https://www.npmjs.com/package/uuid see version 1
 //import dependencies
 const fs = require("fs");
+const { read } = require("store/storages/localStorage");
+//https://www.npmjs.com/package/util
+const util = require("util");
 
 //uuid.v1() create a version 1 timestamp UUID
 const { v1: uuidv1 } = require('uuid');
+
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 
 //combine functions into a single exportable class
 class DB {
@@ -12,16 +18,16 @@ class DB {
     //https://www.w3schools.com/nodejs/nodejs_filesystem.asp
     //read through the notes objects in db.json
     read() {
-        return fs.readFile("Develop/db.json");
+        return readFileAsync("db/db.json", "utf-8");
     }
 
     //write the stringified notes objects to the page
     write(note) {
-        return fs.writeFile("Develop/db.json", JSON.stringify(note));
+        return writeFileAsync("db/db.json", JSON.stringify(note));
     }
 
     getNotes() {
-        return ((notes) => {
+        return this.read().then((notes) => {
             //create let to hold parsed notes
             let parsedNotes;
 
@@ -30,8 +36,9 @@ class DB {
             try {
                 parsedNotes = [].concat(JSON.parse(notes));
             }
-            catch {
+            catch (err) {
                 parsedNotes = [];
+                console.log(err);
             }
 
             return parsedNotes;
