@@ -3,11 +3,20 @@
 //import dependencies
 const fs = require("fs");
 //https://www.npmjs.com/package/util
+//The util module supports the needs of Node.js internal APIs
 const util = require("util");
 
 //uuid.v1() create a version 1 timestamp UUID
 const { v1: uuidv1 } = require('uuid');
 
+//util.promisify Takes a function following the common error-first 
+//callback style, i.e. taking an (err, value) => ... callback as 
+//the last argument, and returns a version that returns promises
+//fs.readFile Asynchronously reads the entire contents of a file
+//fs.writeFile Asynchronously writes data to a file, replacing 
+//the file if it already exists. data can be a string, a buffer, 
+//or an object with an own toString function property. The 
+//promise is resolved with no arguments upon success
 const readFileAsync = util.promisify(fs.readFile);
 const writeFileAsync = util.promisify(fs.writeFile);
 

@@ -1,11 +1,14 @@
-# note-taker
+# Note-Taker
 
-//figure out whether I can keep index.html in the public folder,
-//or if I have to bring it to the root folder
+Note-Taker is a note taking application that allows you to jot down a note's title and a quick description, upon saving it will populate in your to-do
+list, where it will remain (even if the page is closed or refreshed) until
+deleted.
 
-//draw out the connection pattern for better clarity
+Deployed Application:
+https://note-taker-geigeraaron.herokuapp.com/
 
-//put all "require" constants at the top
+![screenshot](./images/landingshot.png)
+![screenshot](./images/screenshot.png)
 
 Check out:
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes
